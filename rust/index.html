@@ -5,4 +5,27 @@
         <title>Yew App</title>
     </head>
     <body></body>
+    <script>
+
+
+    var session = {
+          audio: true,
+          video: false
+      };
+
+      function onAudio(e) {
+        var mic = e.inputBuffer.getChannelData(0);
+        console.log(mic)
+    }
+
+    navigator.mediaDevices.getUserMedia(session).then(stream => {
+          var context = new window.AudioContext;
+          var audioInput = context.createMediaStreamSource(stream);
+          var bufferSize = 2048;
+          recorder = context.createScriptProcessor(bufferSize, 1, 1);
+          recorder.onaudioprocess = onAudio;
+          audioInput.connect(recorder);
+          recorder.connect(context.destination);
+      });
+    </script>
 </html>
